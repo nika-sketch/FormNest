@@ -19,7 +19,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "FORM_NEST_BASE_URL", "\"https://mocki.io/v1/\"")
+        }
         release {
+            buildConfigField("String", "FORM_NEST_BASE_URL", "\"https://mocki.io/v1/\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -36,6 +40,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -56,4 +61,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Networking dependencies
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logginginterceptor)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.converter.moshi)
+
 }
