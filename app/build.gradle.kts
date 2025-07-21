@@ -79,4 +79,8 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.converter.moshi)
 
+    //ViewModel/Activity
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
 }
