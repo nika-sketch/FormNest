@@ -1,7 +1,7 @@
 package com.example.formnest.di
 
 import com.example.formnest.BuildConfig
-import com.example.formnest.data.FormNestService
+import com.example.formnest.data.service.FormNestService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient

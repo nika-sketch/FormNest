@@ -21,9 +21,19 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "FORM_NEST_BASE_URL", "\"https://mocki.io/v1/\"")
+            buildConfigField(
+                "String",
+                "FORM_NEST_ENDPOING",
+                "\"f118b9f0-6f84-435e-85d5-faf4453eb72a\""
+            )
         }
         release {
             buildConfigField("String", "FORM_NEST_BASE_URL", "\"https://mocki.io/v1/\"")
+            buildConfigField(
+                "String",
+                "FORM_NEST_ENDPOING",
+                "\"f118b9f0-6f84-435e-85d5-faf4453eb72a\""
+            )
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
