@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.formnest.FormNestApp
-import com.example.formnest.data.model.FormNestApiModel
+import com.example.formnest.domain.model.ContentItemDomain
 import com.example.formnest.shared.viewModelFactory
 import com.example.formnest.ui.theme.FormNestTheme
 
@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val viewModel = viewModel<MainViewModel>(
                 factory = viewModelFactory {
-                    MainViewModel(networkModule = FormNestApp.networkModule)
+                    MainViewModel(formNestRepository = FormNestApp.formNestRepository)
                 }
             )
             FormNestTheme {
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier, formNestApiModel: FormNestApiModel) {
+fun Greeting(name: String, modifier: Modifier = Modifier, formNestApiModel: ContentItemDomain) {
     Text(
         text = formNestApiModel.toString(),
         modifier = modifier
@@ -57,7 +57,7 @@ fun GreetingPreview() {
     FormNestTheme {
         Greeting(
             name = "Android",
-            formNestApiModel = FormNestApiModel(emptyList(), "", "")
+            formNestApiModel = ContentItemDomain.Text("Sample Text")
         )
     }
 }

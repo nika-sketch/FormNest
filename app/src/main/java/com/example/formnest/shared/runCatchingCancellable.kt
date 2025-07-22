@@ -2,13 +2,11 @@ package com.example.formnest.shared
 
 import kotlin.coroutines.cancellation.CancellationException
 
-inline fun <R> runCatchingCancellable(block: () -> R): Result<R> {
-    return try {
-        Result.success(block())
-    } catch (e: Throwable) {
-        if (e is CancellationException) {
-            throw e
-        }
-        Result.failure(e)
+inline fun <R> runCatchingCancellable(block: () -> R): Result<R> = try {
+    Result.success(block())
+} catch (e: Throwable) {
+    if (e is CancellationException) {
+        throw e
     }
+    Result.failure(e)
 }
