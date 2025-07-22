@@ -1,0 +1,15 @@
+*.iml
+.gradle
+.idea/
+/local.properties
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+/.idea/.gitignore
+/app/.gitignore
+/.idea/AndroidProjectSystem.xml
+/app/src/main/res/xml/backup_rules.xml
+/app/src/main/res/xml/data_extraction_rules.xml
