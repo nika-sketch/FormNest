@@ -11,18 +11,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.formnest.FormNestApp
+import com.example.formnest.data.model.FormNestApiModel
+import com.example.formnest.shared.viewModelFactory
 import com.example.formnest.ui.theme.FormNestTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel = viewModel<MainViewModel>(
+                factory = viewModelFactory {
+                    MainViewModel(networkModule = FormNestApp.networkModule)
+                }
+            )
             FormNestTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    val state = viewModel.state.collectAsStateWithLifecycle()
                     Greeting(
                         name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        formNestApiModel = state.value
                     )
                 }
             }
@@ -31,9 +44,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(name: String, modifier: Modifier = Modifier, formNestApiModel: FormNestApiModel) {
     Text(
-        text = "Hello $name!",
+        text = formNestApiModel.toString(),
         modifier = modifier
     )
 }
@@ -42,6 +55,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     FormNestTheme {
-        Greeting("Android")
+        Greeting(
+            name = "Android",
+            formNestApiModel = FormNestApiModel(emptyList(), "", "")
+        )
     }
 }
