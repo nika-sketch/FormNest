@@ -31,7 +31,9 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.formnest.FormNestApp
-import com.example.formnest.domain.model.ContentItemDomain
+import com.example.formnest.presentation.mapper.ContentUiMapper
+import com.example.formnest.presentation.model.ContentItemUi
+import com.example.formnest.presentation.model.RendererItemUi
 import com.example.formnest.shared.viewModelFactory
 import com.example.formnest.ui.theme.FormNestTheme
 
@@ -43,7 +45,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             val viewModel = viewModel<MainViewModel>(
                 factory = viewModelFactory {
-                    MainViewModel(formNestRepository = FormNestApp.formNestRepository)
+                    MainViewModel(
+                        formNestRepository = FormNestApp.formNestRepository,
+                        contentMapper = ContentUiMapper()
+                    )
                 }
             )
             FormNestTheme {
@@ -57,24 +62,22 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ContentScreen(contentList: List<RenderableItem>, innerPadding: PaddingValues) {
+fun ContentScreen(contentList: List<RendererItemUi>, innerPadding: PaddingValues) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
     ) {
-        itemsIndexed(contentList, key = { index, item ->
-            item.hashCode()
-        }) { index, item ->
-            RenderFlatItem(renderable = item)
+        itemsIndexed(contentList) { index, item ->
+            RenderFlatItem(renderItemUi = item)
         }
     }
 }
 
 @Composable
-fun RenderFlatItem(renderable: RenderableItem) {
-    val item = renderable.item
-    val level = renderable.level
+fun RenderFlatItem(renderItemUi: RendererItemUi) {
+    val item = renderItemUi.item
+    val level = renderItemUi.level
 
     val baseFontSize = 24.sp
     val step = 2.sp
@@ -92,18 +95,18 @@ fun RenderFlatItem(renderable: RenderableItem) {
             .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
     ) {
         when (item) {
-            is ContentItemDomain.Page -> Text(
+            is ContentItemUi.Page -> Text(
                 text = item.title,
                 fontSize = fontSize, fontWeight = FontWeight.Bold
             )
 
-            is ContentItemDomain.Section -> Text(
+            is ContentItemUi.Section -> Text(
                 text = item.title, fontSize = fontSize,
                 fontWeight = FontWeight.SemiBold
             )
 
-            is ContentItemDomain.Text -> Text(text = item.title, fontSize = fontSize)
-            is ContentItemDomain.Image -> {
+            is ContentItemUi.Text -> Text(text = item.title, fontSize = fontSize)
+            is ContentItemUi.Image -> {
                 Text(text = item.title, fontSize = fontSize)
                 Spacer(modifier = Modifier.height(4.dp))
                 ClickableImage(
