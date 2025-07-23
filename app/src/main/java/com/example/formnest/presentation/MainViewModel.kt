@@ -2,9 +2,8 @@ package com.example.formnest.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.formnest.data.model.FormNestApiModel
-import com.example.formnest.di.NetworkModule
-import com.example.formnest.shared.runCatchingCancellable
+import com.example.formnest.domain.model.ContentItemDomain
+import com.example.formnest.domain.repository.FormNestRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,22 +11,21 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val networkModule: NetworkModule
+    private val formNestRepository: FormNestRepository
 ) : ViewModel() {
 
-    private val mutableState = MutableStateFlow<FormNestApiModel>(
-        FormNestApiModel(emptyList(), "", "")
+    private val mutableState = MutableStateFlow<ContentItemDomain>(
+        ContentItemDomain.Text(title = "Text")
     )
-    val state: StateFlow<FormNestApiModel> = mutableState.asStateFlow()
+    val state: StateFlow<ContentItemDomain> = mutableState.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            runCatchingCancellable {
-                networkModule.provideFormNestService().fetchSurveyData()
-            }.onSuccess { response ->
-                mutableState.value = response.body() ?: error("Body is null")
-            }.onFailure { e ->
-                mutableState.value = FormNestApiModel(emptyList(), "", "")
+            formNestRepository.surveyData().onSuccess { contentItem ->
+                mutableState.value = contentItem
+            }.onFailure { error ->
+                // TODO handle error
+                mutableState.value = ContentItemDomain.Text(title = "Error: ${error.message}")
             }
         }
     }

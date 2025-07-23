@@ -84,4 +84,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
+    //Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.okhttp)
+
 }

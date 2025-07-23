@@ -1,11 +1,11 @@
 package com.example.formnest.data.model
 
+import com.squareup.moshi.JsonClass
 
-import androidx.annotation.Keep
-
-@Keep
+@JsonClass(generateAdapter = true)
 data class FormNestApiModel(
-    val items: List<Item>,
-    val title: String,
-    val type: String
+    val type: String,
+    val title: String?,
+    val src: String?,
+    val items: List<FormNestApiModel>? = null
 )
