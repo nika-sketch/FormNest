@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.formnest.data.repository.FormNestRepositoryImpl
 import com.example.formnest.di.NetworkModule
 import com.example.formnest.domain.repository.FormNestRepository
+import com.example.formnest.shared.DispatcherProvider
 
 class FormNestApp : Application() {
 
@@ -14,7 +15,8 @@ class FormNestApp : Application() {
     override fun onCreate() {
         super.onCreate()
         formNestRepository = FormNestRepositoryImpl(
-            NetworkModule.NetworkModuleImpl().provideFormNestService()
+            service = NetworkModule.NetworkModuleImpl().provideFormNestService(),
+            dispatcherProvider = DispatcherProvider.Default(),
         )
     }
 }
