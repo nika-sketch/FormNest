@@ -86,5 +86,6 @@ dependencies {
 
     //Coil
     implementation(libs.coil.compose)
+    implementation(libs.coil.okhttp)
 
 }

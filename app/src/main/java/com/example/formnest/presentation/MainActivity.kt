@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.formnest.FormNestApp
 import com.example.formnest.domain.model.ContentItemDomain
 import com.example.formnest.shared.viewModelFactory
@@ -112,8 +115,11 @@ fun RenderItem(item: ContentItemDomain, level: Int) {
 
 @Composable
 fun ClickableImage(imageUrl: String, title: String) {
+    val model = ImageRequest.Builder(LocalContext.current)
+        .data(imageUrl)
+        .crossfade(true).build()
     AsyncImage(
-        model = imageUrl,
+        model = model,
         contentDescription = title,
         modifier = Modifier
             .size(100.dp)
