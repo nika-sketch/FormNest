@@ -2,7 +2,7 @@ package com.example.formnest.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.formnest.domain.model.ContentItemDomain
+import com.example.formnest.domain.model.FormNestDomain
 import com.example.formnest.domain.repository.FormNestRepository
 import com.example.formnest.presentation.model.ContentItemUi
 import com.example.formnest.presentation.model.RendererItemUi
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel(
     private val formNestRepository: FormNestRepository,
-    private val contentMapper: Mapper<ContentItemDomain, ContentItemUi>,
+    private val contentMapper: Mapper<FormNestDomain, ContentItemUi>,
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 

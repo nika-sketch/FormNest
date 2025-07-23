@@ -15,8 +15,8 @@ class FormNestApp : Application() {
     override fun onCreate() {
         super.onCreate()
         formNestRepository = FormNestRepositoryImpl(
-            NetworkModule.NetworkModuleImpl().provideFormNestService(),
-            DispatcherProvider.Default()
+            service = NetworkModule.NetworkModuleImpl().provideFormNestService(),
+            dispatcherProvider = DispatcherProvider.Default(),
         )
     }
 }
