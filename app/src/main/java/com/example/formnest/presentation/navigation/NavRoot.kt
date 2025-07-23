@@ -14,6 +14,8 @@ import com.example.formnest.FormNestApp
 import com.example.formnest.presentation.hierarchy.ContentViewModel
 import com.example.formnest.presentation.mapper.ContentUiMapper
 import com.example.formnest.presentation.hierarchy.HierarchyScreen
+import com.example.formnest.presentation.imagedetail.ImageContent
+import com.example.formnest.presentation.navigation.model.ImageDetail
 import com.example.formnest.presentation.navigation.model.MainScreen
 import com.example.formnest.shared.DispatcherProvider
 import com.example.formnest.shared.viewModelFactory
@@ -42,7 +44,16 @@ fun NavRoot(modifier: Modifier = Modifier) {
                         }
                     )
                     val state = contentViewModel.state.collectAsStateWithLifecycle()
-                    HierarchyScreen(contentList = state.value)
+                    HierarchyScreen(contentList = state.value, onClick = { title, imageUrl ->
+                        backStack.add(ImageDetail(title = title, imageUrl = imageUrl))
+                    })
+                }
+
+                is ImageDetail -> NavEntry(key = key) {
+                    ImageContent(
+                        title = key.title,
+                        imageUrl = key.imageUrl,
+                    )
                 }
 
                 else -> error("Unknown key: $key")

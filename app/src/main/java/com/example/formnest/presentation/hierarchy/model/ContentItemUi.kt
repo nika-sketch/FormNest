@@ -1,5 +1,6 @@
 package com.example.formnest.presentation.hierarchy.model
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -20,14 +21,14 @@ import coil3.request.crossfade
 sealed interface ContentItemUi {
 
     @Composable
-    fun Content(fontSize: TextUnit)
+    fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)? = null)
 
     data class Page(
         val title: String,
         val items: List<ContentItemUi>,
     ) : ContentItemUi {
         @Composable
-        override fun Content(fontSize: TextUnit) {
+        override fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)?) {
             Text(
                 text = title,
                 fontSize = fontSize, fontWeight = FontWeight.Bold
@@ -40,7 +41,7 @@ sealed interface ContentItemUi {
         val items: List<ContentItemUi>,
     ) : ContentItemUi {
         @Composable
-        override fun Content(fontSize: TextUnit) {
+        override fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)?) {
             Text(
                 text = title, fontSize = fontSize,
                 fontWeight = FontWeight.SemiBold
@@ -50,7 +51,7 @@ sealed interface ContentItemUi {
 
     data class Text(val title: String) : ContentItemUi {
         @Composable
-        override fun Content(fontSize: TextUnit) {
+        override fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)?) {
             Text(text = title, fontSize = fontSize)
         }
     }
@@ -59,17 +60,21 @@ sealed interface ContentItemUi {
         val title: String, val src: String
     ) : ContentItemUi {
         @Composable
-        override fun Content(fontSize: TextUnit) {
+        override fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)?) {
             Text(text = title, fontSize = fontSize)
             Spacer(modifier = Modifier.height(4.dp))
             ClickableImage(
                 imageUrl = src,
-                title = title
+                title = title,
+                onClick = onClick
             )
         }
 
         @Composable
-        private fun ClickableImage(imageUrl: String, title: String) {
+        private fun ClickableImage(
+            imageUrl: String, title: String,
+            onClick: ((String, String) -> Unit)? = null
+        ) {
             val model = ImageRequest.Builder(LocalContext.current)
                 .data(imageUrl)
                 .crossfade(true).build()
@@ -78,6 +83,9 @@ sealed interface ContentItemUi {
                 contentDescription = title,
                 modifier = Modifier
                     .size(100.dp)
+                    .clickable {
+                        onClick?.invoke(title, imageUrl)
+                    }
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )

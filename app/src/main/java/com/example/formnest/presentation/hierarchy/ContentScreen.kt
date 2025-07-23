@@ -13,19 +13,22 @@ import androidx.compose.ui.unit.sp
 import com.example.formnest.presentation.hierarchy.model.RendererItemUi
 
 @Composable
-fun HierarchyScreen(contentList: List<RendererItemUi>) {
+fun HierarchyScreen(
+    contentList: List<RendererItemUi>,
+    onClick: ((String, String) -> Unit)? = null
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
     ) {
         itemsIndexed(contentList) { index, item ->
-            HierarchyItem(renderItemUi = item)
+            HierarchyItem(renderItemUi = item, onClick = onClick)
         }
     }
 }
 
 @Composable
-fun HierarchyItem(renderItemUi: RendererItemUi) {
+fun HierarchyItem(renderItemUi: RendererItemUi, onClick: ((String, String) -> Unit)? = null) {
     val item = renderItemUi.item
     val level = renderItemUi.level
 
@@ -40,6 +43,6 @@ fun HierarchyItem(renderItemUi: RendererItemUi) {
             .fillMaxWidth()
             .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
     ) {
-        item.Content(fontSize)
+        item.Content(fontSize, onClick = onClick)
     }
 }

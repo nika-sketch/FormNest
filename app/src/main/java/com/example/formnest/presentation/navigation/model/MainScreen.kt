@@ -5,3 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object MainScreen : NavKey
+
+data class ImageDetail(
+    val title: String,
+    val imageUrl: String
+) : NavKey
