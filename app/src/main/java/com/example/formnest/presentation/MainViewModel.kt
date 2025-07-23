@@ -6,35 +6,39 @@ import com.example.formnest.domain.model.ContentItemDomain
 import com.example.formnest.domain.repository.FormNestRepository
 import com.example.formnest.presentation.model.ContentItemUi
 import com.example.formnest.presentation.model.RendererItemUi
+import com.example.formnest.shared.DispatcherProvider
 import com.example.formnest.shared.Mapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel(
     private val formNestRepository: FormNestRepository,
-    private val contentMapper: Mapper<ContentItemDomain, ContentItemUi>
+    private val contentMapper: Mapper<ContentItemDomain, ContentItemUi>,
+    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<List<RendererItemUi>>(emptyList())
     val state: StateFlow<List<RendererItemUi>> = _state.asStateFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            formNestRepository.surveyData()
-                .onSuccess { contentItemDomain ->
+        viewModelScope.launch {
+            formNestRepository.surveyData().onSuccess { contentItemDomain ->
+                withContext(dispatchers.main()) {
                     val contentUi = contentMapper.map(contentItemDomain)
                     _state.value = flattenContentItem(contentUi)
-                }.onFailure { error ->
-                    _state.value = listOf(
-                        RendererItemUi(
-                            item = ContentItemUi.Text(title = "Error: ${error.message}"),
-                            level = 0
-                        )
-                    )
                 }
+            }.onFailure { error ->
+                _state.value = listOf(
+                    RendererItemUi(
+                        item = ContentItemUi.Text(title = "Error: ${error.message}"),
+                        level = 0
+                    )
+                )
+            }
         }
     }
 

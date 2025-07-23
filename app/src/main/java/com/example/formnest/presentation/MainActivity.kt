@@ -34,6 +34,7 @@ import com.example.formnest.FormNestApp
 import com.example.formnest.presentation.mapper.ContentUiMapper
 import com.example.formnest.presentation.model.ContentItemUi
 import com.example.formnest.presentation.model.RendererItemUi
+import com.example.formnest.shared.DispatcherProvider
 import com.example.formnest.shared.viewModelFactory
 import com.example.formnest.ui.theme.FormNestTheme
 
@@ -47,7 +48,8 @@ class MainActivity : ComponentActivity() {
                 factory = viewModelFactory {
                     MainViewModel(
                         formNestRepository = FormNestApp.formNestRepository,
-                        contentMapper = ContentUiMapper()
+                        contentMapper = ContentUiMapper(),
+                        dispatchers = DispatcherProvider.Default()
                     )
                 }
             )
