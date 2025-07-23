@@ -6,23 +6,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,7 +28,6 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.formnest.FormNestApp
 import com.example.formnest.presentation.mapper.ContentUiMapper
-import com.example.formnest.presentation.model.ContentItemUi
 import com.example.formnest.presentation.model.RendererItemUi
 import com.example.formnest.shared.DispatcherProvider
 import com.example.formnest.shared.viewModelFactory
@@ -96,27 +91,7 @@ fun RenderFlatItem(renderItemUi: RendererItemUi) {
             .fillMaxWidth()
             .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
     ) {
-        when (item) {
-            is ContentItemUi.Page -> Text(
-                text = item.title,
-                fontSize = fontSize, fontWeight = FontWeight.Bold
-            )
-
-            is ContentItemUi.Section -> Text(
-                text = item.title, fontSize = fontSize,
-                fontWeight = FontWeight.SemiBold
-            )
-
-            is ContentItemUi.Text -> Text(text = item.title, fontSize = fontSize)
-            is ContentItemUi.Image -> {
-                Text(text = item.title, fontSize = fontSize)
-                Spacer(modifier = Modifier.height(4.dp))
-                ClickableImage(
-                    imageUrl = item.src,
-                    title = item.title
-                )
-            }
-        }
+        item.Content(fontSize)
     }
 }
 
