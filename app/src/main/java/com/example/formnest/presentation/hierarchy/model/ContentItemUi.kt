@@ -1,14 +1,21 @@
-package com.example.formnest.presentation.model
+package com.example.formnest.presentation.hierarchy.model
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.example.formnest.presentation.ClickableImage
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 
 sealed interface ContentItemUi {
 
@@ -58,6 +65,21 @@ sealed interface ContentItemUi {
             ClickableImage(
                 imageUrl = src,
                 title = title
+            )
+        }
+
+        @Composable
+        private fun ClickableImage(imageUrl: String, title: String) {
+            val model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .crossfade(true).build()
+            AsyncImage(
+                model = model,
+                contentDescription = title,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
             )
         }
     }

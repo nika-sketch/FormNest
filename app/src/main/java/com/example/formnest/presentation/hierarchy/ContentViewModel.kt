@@ -1,11 +1,11 @@
-package com.example.formnest.presentation
+package com.example.formnest.presentation.hierarchy
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.formnest.domain.model.FormNestDomain
 import com.example.formnest.domain.repository.FormNestRepository
-import com.example.formnest.presentation.model.ContentItemUi
-import com.example.formnest.presentation.model.RendererItemUi
+import com.example.formnest.presentation.hierarchy.model.ContentItemUi
+import com.example.formnest.presentation.hierarchy.model.RendererItemUi
 import com.example.formnest.shared.DispatcherProvider
 import com.example.formnest.shared.Mapper
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel(
+class ContentViewModel(
     private val formNestRepository: FormNestRepository,
     private val contentMapper: Mapper<FormNestDomain, ContentItemUi>,
     private val dispatchers: DispatcherProvider
@@ -54,4 +54,3 @@ class MainViewModel(
         traverse(root, 0)
     }
 }
-

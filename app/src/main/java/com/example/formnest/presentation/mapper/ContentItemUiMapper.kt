@@ -1,7 +1,7 @@
 package com.example.formnest.presentation.mapper
 
 import com.example.formnest.domain.model.FormNestDomain
-import com.example.formnest.presentation.model.ContentItemUi
+import com.example.formnest.presentation.hierarchy.model.ContentItemUi
 import com.example.formnest.shared.Mapper
 
 class ContentUiMapper : Mapper<FormNestDomain, ContentItemUi> {

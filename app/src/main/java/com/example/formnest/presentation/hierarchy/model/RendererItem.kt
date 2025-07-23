@@ -1,4 +1,4 @@
-package com.example.formnest.presentation.model
+package com.example.formnest.presentation.hierarchy.model
 
 data class RendererItemUi(
     val item: ContentItemUi,
