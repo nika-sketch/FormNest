@@ -33,11 +33,9 @@ class MainViewModel(
         }
     }
 
-    private fun flattenContentItem(root: ContentItemDomain): List<RenderableItem> {
-        val list = mutableListOf<RenderableItem>()
-
+    private fun flattenContentItem(root: ContentItemDomain): List<RenderableItem> = buildList {
         fun traverse(item: ContentItemDomain, level: Int) {
-            list.add(RenderableItem(item, level))
+            add(RenderableItem(item, level))
             when (item) {
                 is ContentItemDomain.Page -> item.items.forEach { traverse(it, level + 1) }
                 is ContentItemDomain.Section -> item.items.forEach { traverse(it, level + 1) }
@@ -46,7 +44,6 @@ class MainViewModel(
         }
 
         traverse(root, 0)
-        return list
     }
 }
 

@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
             val viewModel = viewModel<MainViewModel>(
                 factory = viewModelFactory {
@@ -77,11 +76,13 @@ fun RenderFlatItem(renderable: RenderableItem) {
     val item = renderable.item
     val level = renderable.level
 
-    val fontSize = when (level) {
-        0 -> 24.sp
-        1 -> 20.sp
-        else -> 16.sp
-    }
+    val baseFontSize = 24.sp
+    val step = 2.sp
+    val minFontSize = 12.sp
+
+    val fontSize = (baseFontSize.value - level * step.value)
+        .coerceAtLeast(minFontSize.value)
+        .sp
 
     val paddingStart = (level * 12).dp
 
@@ -91,18 +92,17 @@ fun RenderFlatItem(renderable: RenderableItem) {
             .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
     ) {
         when (item) {
-            is ContentItemDomain.Page -> {
-                Text(text = item.title, fontSize = fontSize, fontWeight = FontWeight.Bold)
-            }
+            is ContentItemDomain.Page -> Text(
+                text = item.title,
+                fontSize = fontSize, fontWeight = FontWeight.Bold
+            )
 
-            is ContentItemDomain.Section -> {
-                Text(text = item.title, fontSize = fontSize, fontWeight = FontWeight.SemiBold)
-            }
+            is ContentItemDomain.Section -> Text(
+                text = item.title, fontSize = fontSize,
+                fontWeight = FontWeight.SemiBold
+            )
 
-            is ContentItemDomain.Text -> {
-                Text(text = item.title, fontSize = fontSize)
-            }
-
+            is ContentItemDomain.Text -> Text(text = item.title, fontSize = fontSize)
             is ContentItemDomain.Image -> {
                 Text(text = item.title, fontSize = fontSize)
                 Spacer(modifier = Modifier.height(4.dp))
