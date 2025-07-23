@@ -14,19 +14,44 @@ class MainViewModel(
     private val formNestRepository: FormNestRepository
 ) : ViewModel() {
 
-    private val mutableState = MutableStateFlow<ContentItemDomain>(
-        ContentItemDomain.Text(title = "Text")
-    )
-    val state: StateFlow<ContentItemDomain> = mutableState.asStateFlow()
+    private val _state = MutableStateFlow<List<RenderableItem>>(emptyList())
+    val state: StateFlow<List<RenderableItem>> = _state.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            formNestRepository.surveyData().onSuccess { contentItem ->
-                mutableState.value = contentItem
-            }.onFailure { error ->
-                // TODO handle error
-                mutableState.value = ContentItemDomain.Text(title = "Error: ${error.message}")
-            }
+            formNestRepository.surveyData()
+                .onSuccess { contentItem ->
+                    _state.value = flattenContentItem(contentItem)
+                }.onFailure { error ->
+                    _state.value = listOf(
+                        RenderableItem(
+                            item = ContentItemDomain.Text(title = "Error: ${error.message}"),
+                            level = 0
+                        )
+                    )
+                }
         }
     }
+
+    private fun flattenContentItem(root: ContentItemDomain): List<RenderableItem> {
+        val list = mutableListOf<RenderableItem>()
+
+        fun traverse(item: ContentItemDomain, level: Int) {
+            list.add(RenderableItem(item, level))
+            when (item) {
+                is ContentItemDomain.Page -> item.items.forEach { traverse(it, level + 1) }
+                is ContentItemDomain.Section -> item.items.forEach { traverse(it, level + 1) }
+                else -> Unit
+            }
+        }
+
+        traverse(root, 0)
+        return list
+    }
 }
+
+
+data class RenderableItem(
+    val item: ContentItemDomain,
+    val level: Int
+)

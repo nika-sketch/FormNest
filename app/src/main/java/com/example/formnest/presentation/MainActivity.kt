@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,7 +23,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             val viewModel = viewModel<MainViewModel>(
                 factory = viewModelFactory {
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
             FormNestTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val state = viewModel.state.collectAsStateWithLifecycle()
-                    ContentScreen(listOf(state.value), innerPadding = innerPadding)
+                    ContentScreen(contentList = state.value, innerPadding = innerPadding)
                 }
             }
         }
@@ -57,20 +58,25 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ContentScreen(contentItems: List<ContentItemDomain>, innerPadding: PaddingValues) {
+fun ContentScreen(contentList: List<RenderableItem>, innerPadding: PaddingValues) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
     ) {
-        itemsIndexed(contentItems) { index, item ->
-            RenderItem(item = item, level = 0)
+        itemsIndexed(contentList, key = { index, item ->
+            item.hashCode()
+        }) { index, item ->
+            RenderFlatItem(renderable = item)
         }
     }
 }
 
 @Composable
-fun RenderItem(item: ContentItemDomain, level: Int) {
+fun RenderFlatItem(renderable: RenderableItem) {
+    val item = renderable.item
+    val level = renderable.level
+
     val fontSize = when (level) {
         0 -> 24.sp
         1 -> 20.sp
@@ -79,22 +85,18 @@ fun RenderItem(item: ContentItemDomain, level: Int) {
 
     val paddingStart = (level * 12).dp
 
-    Column(modifier = Modifier.padding(start = paddingStart)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
+    ) {
         when (item) {
             is ContentItemDomain.Page -> {
                 Text(text = item.title, fontSize = fontSize, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.height(4.dp))
-                item.items.forEach { child ->
-                    RenderItem(child, level + 1)
-                }
             }
 
             is ContentItemDomain.Section -> {
                 Text(text = item.title, fontSize = fontSize, fontWeight = FontWeight.SemiBold)
-                Spacer(modifier = Modifier.height(4.dp))
-                item.items.forEach { child ->
-                    RenderItem(child, level + 1)
-                }
             }
 
             is ContentItemDomain.Text -> {
@@ -126,24 +128,4 @@ fun ClickableImage(imageUrl: String, title: String) {
             .clip(RoundedCornerShape(8.dp)),
         contentScale = ContentScale.Crop
     )
-}
-
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier, formNestApiModel: ContentItemDomain) {
-    Text(
-        text = formNestApiModel.toString(),
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FormNestTheme {
-        Greeting(
-            name = "Android",
-            formNestApiModel = ContentItemDomain.Text("Sample Text")
-        )
-    }
 }
