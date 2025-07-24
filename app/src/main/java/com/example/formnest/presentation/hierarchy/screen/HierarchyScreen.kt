@@ -101,9 +101,7 @@ fun HierarchyItem(
       .fillMaxWidth()
       .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
       .offset { IntOffset(x = 0, y = offsetY.roundToPx()) }
-      .graphicsLayer {
-        this.alpha = alpha
-      }
+      .graphicsLayer { this.alpha = alpha }
   ) {
     when (item) {
       is HierarchyContentUi.Page -> Text(
