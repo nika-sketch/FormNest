@@ -12,7 +12,7 @@ import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.example.formnest.FormNestApp
 import com.example.formnest.presentation.hierarchy.ContentViewModel
-import com.example.formnest.presentation.mapper.ContentUiMapper
+import com.example.formnest.presentation.hierarchy.mapper.ContentUiMapper
 import com.example.formnest.presentation.hierarchy.HierarchyScreen
 import com.example.formnest.presentation.imagedetail.ImageContent
 import com.example.formnest.presentation.navigation.model.ImageDetail

@@ -1,4 +1,4 @@
-package com.example.formnest.presentation.mapper
+package com.example.formnest.presentation.hierarchy.mapper
 
 import com.example.formnest.domain.model.FormNestDomain
 import com.example.formnest.presentation.hierarchy.model.ContentItemUi
