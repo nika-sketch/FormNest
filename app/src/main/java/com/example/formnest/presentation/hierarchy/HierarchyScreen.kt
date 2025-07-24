@@ -69,9 +69,7 @@ fun HierarchyItem(
   val fontSize = (baseFontSize.value - level * step.value).coerceAtLeast(minFontSize.value).sp
   val paddingStart = (level * 12).dp
 
-  val transitionState = remember {
-    MutableTransitionState(false)
-  }
+  val transitionState = remember { MutableTransitionState(false) }
   LaunchedEffect(Unit) {
     delay(index * 50L)
     transitionState.targetState = true
