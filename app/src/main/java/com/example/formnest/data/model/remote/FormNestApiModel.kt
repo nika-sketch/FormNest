@@ -1,4 +1,4 @@
-package com.example.formnest.data.model
+package com.example.formnest.data.model.remote
 
 import com.squareup.moshi.JsonClass
 

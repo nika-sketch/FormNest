@@ -23,24 +23,26 @@ class HierarchyViewModel(
   private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
-  private val _state = MutableStateFlow<HierarchyScreenState>(HierarchyScreenState.Loading)
-  val state: StateFlow<HierarchyScreenState> = _state.asStateFlow()
+  private val _hierarchyScreenState = MutableStateFlow<HierarchyScreenState>(
+    HierarchyScreenState.Initial
+  )
+  val hierarchyScreenState: StateFlow<HierarchyScreenState> = _hierarchyScreenState.asStateFlow()
 
   private val triggerRefreshFlow = MutableSharedFlow<Unit>(replay = 1)
 
   init {
     viewModelScope.launch {
       triggerRefreshFlow.collectLatest {
-        _state.value = HierarchyScreenState.Loading
+        _hierarchyScreenState.value = HierarchyScreenState.Loading
         formNestRepository.surveyData().onSuccess { contentItemDomain ->
           withContext(dispatchers.main()) {
             val contentUi = contentMapper.map(contentItemDomain)
-            _state.value = HierarchyScreenState.Success(
+            _hierarchyScreenState.value = HierarchyScreenState.Success(
               hierarchyList = hierarchyList(contentUi)
             )
           }
         }.onFailure { error ->
-          _state.value = HierarchyScreenState.Error(error.message.toString())
+          _hierarchyScreenState.value = HierarchyScreenState.Error(error.message.toString())
         }
       }
     }

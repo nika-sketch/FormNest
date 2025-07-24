@@ -1,6 +1,7 @@
-package com.example.formnest.data.local
+package com.example.formnest.data.cache
 
 import androidx.room.TypeConverter
+import com.example.formnest.data.model.cache.FormNestEntity
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

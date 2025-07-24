@@ -1,7 +1,7 @@
 package com.example.formnest.data.mapper
 
-import com.example.formnest.data.local.FormNestEntity
-import com.example.formnest.data.model.FormNestApiModel
+import com.example.formnest.data.model.cache.FormNestEntity
+import com.example.formnest.data.model.remote.FormNestApiModel
 
 fun FormNestApiModel.toEntity(): FormNestEntity = FormNestEntity(
   type = type.toEntity(),

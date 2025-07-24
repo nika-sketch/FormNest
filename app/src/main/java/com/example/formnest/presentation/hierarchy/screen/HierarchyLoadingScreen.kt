@@ -1,4 +1,4 @@
-package com.example.formnest.presentation.hierarchy
+package com.example.formnest.presentation.hierarchy.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

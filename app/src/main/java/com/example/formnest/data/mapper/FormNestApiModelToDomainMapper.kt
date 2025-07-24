@@ -1,7 +1,7 @@
 package com.example.formnest.data.mapper
 
-import com.example.formnest.data.model.FormNestApiModel
-import com.example.formnest.data.model.FormNestItemType
+import com.example.formnest.data.model.remote.FormNestApiModel
+import com.example.formnest.data.model.remote.FormNestItemType
 import com.example.formnest.domain.model.FormNestDomain
 import kotlin.collections.orEmpty
 

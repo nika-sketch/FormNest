@@ -1,4 +1,4 @@
-package com.example.formnest.presentation.hierarchy
+package com.example.formnest.presentation.hierarchy.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
