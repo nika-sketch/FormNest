@@ -2,6 +2,7 @@ package com.example.formnest.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -21,12 +22,14 @@ import com.example.formnest.presentation.hierarchy.model.HierarchyScreenState
 import com.example.formnest.presentation.imagedetail.ImageContent
 import com.example.formnest.presentation.navigation.model.ImageDetail
 import com.example.formnest.presentation.navigation.model.MainScreen
+import com.example.formnest.shared.ConnectivityObserver
 import com.example.formnest.shared.DispatcherProvider
 import com.example.formnest.shared.viewModelFactory
 
 @Composable
 fun NavRoot(modifier: Modifier = Modifier) {
   val backStack = rememberNavBackStack(MainScreen)
+  val context = LocalContext.current
   NavDisplay(
     backStack = backStack,
     entryDecorators = listOf(
@@ -42,7 +45,8 @@ fun NavRoot(modifier: Modifier = Modifier) {
             HierarchyViewModel(
               formNestRepository = FormNestApp.formNestRepository,
               contentMapper = ContentUiMapper(),
-              dispatchers = DispatcherProvider.Default()
+              dispatchers = DispatcherProvider.Default(),
+              connectivityObserver = ConnectivityObserver.AndroidConnectivityObserver(context = context)
             )
           }
         )

@@ -7,6 +7,7 @@ import com.example.formnest.domain.repository.FormNestRepository
 import com.example.formnest.presentation.hierarchy.model.HierarchyContentUi
 import com.example.formnest.presentation.hierarchy.model.HierarchyScreenState
 import com.example.formnest.presentation.hierarchy.model.HierarchyRecursiveItemUi
+import com.example.formnest.shared.ConnectivityObserver
 import com.example.formnest.shared.DispatcherProvider
 import com.example.formnest.shared.Mapper
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,7 +21,8 @@ import kotlinx.coroutines.withContext
 class HierarchyViewModel(
   private val formNestRepository: FormNestRepository,
   private val contentMapper: Mapper<FormNestDomain, HierarchyContentUi>,
-  private val dispatchers: DispatcherProvider
+  private val dispatchers: DispatcherProvider,
+  private val connectivityObserver: ConnectivityObserver
 ) : ViewModel() {
 
   private val _hierarchyScreenState = MutableStateFlow<HierarchyScreenState>(
@@ -31,21 +33,8 @@ class HierarchyViewModel(
   private val triggerRefreshFlow = MutableSharedFlow<Unit>(replay = 1)
 
   init {
-    viewModelScope.launch {
-      triggerRefreshFlow.collectLatest {
-        _hierarchyScreenState.value = HierarchyScreenState.Loading
-        formNestRepository.surveyData().onSuccess { contentItemDomain ->
-          withContext(dispatchers.main()) {
-            val contentUi = contentMapper.map(contentItemDomain)
-            _hierarchyScreenState.value = HierarchyScreenState.Success(
-              hierarchyList = hierarchyList(contentUi)
-            )
-          }
-        }.onFailure { error ->
-          _hierarchyScreenState.value = HierarchyScreenState.Error(error.message.toString())
-        }
-      }
-    }
+    surveyData()
+    observeConnection()
     triggerRefreshFlow.tryEmit(Unit)
   }
 
@@ -68,5 +57,30 @@ class HierarchyViewModel(
     }
 
     fillHierarchyListRecursive(root, 0)
+  }
+
+  private fun surveyData() = viewModelScope.launch {
+    triggerRefreshFlow.collectLatest {
+      _hierarchyScreenState.value = HierarchyScreenState.Loading
+      formNestRepository.surveyData().onSuccess { contentItemDomain ->
+        withContext(dispatchers.main()) {
+          val contentUi = contentMapper.map(contentItemDomain)
+          _hierarchyScreenState.value = HierarchyScreenState.Success(
+            hierarchyList = hierarchyList(contentUi)
+          )
+        }
+      }.onFailure { error ->
+        // TODO handle error with user friendly message depending on exception type
+        _hierarchyScreenState.value = HierarchyScreenState.Error(error.message.toString())
+      }
+    }
+  }
+
+  private fun observeConnection() = viewModelScope.launch {
+    connectivityObserver.isConnectedFlow.collect { isConnected ->
+      val currentState = _hierarchyScreenState.value
+      if (currentState !is HierarchyScreenState.Success && isConnected)
+        refresh()
+    }
   }
 }
