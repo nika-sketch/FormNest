@@ -17,8 +17,8 @@ class FormNestApp : Application() {
   override fun onCreate() {
     super.onCreate()
     formNestRepository = FormNestRepositoryImpl(
-      service = NetworkModule.NetworkModuleImpl().provideFormNestService(),
-      dao = Room.databaseBuilder(
+      formNestService = NetworkModule.NetworkModuleImpl().provideFormNestService(),
+      formNestDao = Room.databaseBuilder(
         this,
         AppDatabase::class.java,
         "formnest.db"

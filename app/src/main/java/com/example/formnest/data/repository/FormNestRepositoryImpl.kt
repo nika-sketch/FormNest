@@ -10,13 +10,13 @@ import com.example.formnest.shared.DispatcherProvider
 import kotlinx.coroutines.withContext
 
 class FormNestRepositoryImpl(
-  private val service: FormNestService,
-  private val dao: FormNestDao,
+  private val formNestService: FormNestService,
+  private val formNestDao: FormNestDao,
   private val dispatcherProvider: DispatcherProvider,
 ) : FormNestRepository {
 
   override suspend fun surveyData(): Result<FormNestDomain> = withContext(dispatcherProvider.io()) {
-    val cachedResult = dao.getAll()
+    val cachedResult = formNestDao.getAll()
     if (cachedResult.isNotEmpty()) {
       Result.success(
         cachedResult.first().toFormNestDomain()
@@ -24,12 +24,12 @@ class FormNestRepositoryImpl(
       )
     } else {
       runCatching {
-        val response = service.fetchSurveyData()
+        val response = formNestService.fetchSurveyData()
         if (!response.isSuccessful) error("Network call failed with code: ${response.code()}")
         val body = response.body() ?: error("Body is null")
         val formNestDomain = body.toFormNestDomain() ?: error("Invalid data structure")
-        dao.clear()
-        dao.insertAll(listOf(body.toEntity()))
+        formNestDao.clear()
+        formNestDao.insertAll(listOf(body.toEntity()))
         formNestDomain
       }.fold(
         onSuccess = { Result.success(it) },
