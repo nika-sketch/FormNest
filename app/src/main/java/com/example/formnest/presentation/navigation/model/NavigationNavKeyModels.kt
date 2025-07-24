@@ -8,6 +8,6 @@ data object MainScreen : NavKey
 
 @Serializable
 data class ImageDetail(
-    val title: String,
-    val imageUrl: String
+  val title: String,
+  val imageUrl: String
 ) : NavKey

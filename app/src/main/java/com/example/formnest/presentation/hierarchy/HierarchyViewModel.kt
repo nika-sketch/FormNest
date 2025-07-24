@@ -18,53 +18,55 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HierarchyViewModel(
-    private val formNestRepository: FormNestRepository,
-    private val contentMapper: Mapper<FormNestDomain, HierarchyContentUi>,
-    private val dispatchers: DispatcherProvider
+  private val formNestRepository: FormNestRepository,
+  private val contentMapper: Mapper<FormNestDomain, HierarchyContentUi>,
+  private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<HierarchyScreenState>(HierarchyScreenState.Loading)
-    val state: StateFlow<HierarchyScreenState> = _state.asStateFlow()
+  private val _hierarchyScreenState = MutableStateFlow<HierarchyScreenState>(
+    HierarchyScreenState.Initial
+  )
+  val hierarchyScreenState: StateFlow<HierarchyScreenState> = _hierarchyScreenState.asStateFlow()
 
-    private val triggerRefreshFlow = MutableSharedFlow<Unit>(replay = 1)
+  private val triggerRefreshFlow = MutableSharedFlow<Unit>(replay = 1)
 
-    init {
-        viewModelScope.launch {
-            triggerRefreshFlow.collectLatest {
-                _state.value = HierarchyScreenState.Loading
-                formNestRepository.surveyData().onSuccess { contentItemDomain ->
-                    withContext(dispatchers.main()) {
-                        val contentUi = contentMapper.map(contentItemDomain)
-                        _state.value = HierarchyScreenState.Success(
-                            hierarchyList = hierarchyList(contentUi)
-                        )
-                    }
-                }.onFailure { error ->
-                    _state.value = HierarchyScreenState.Error(error.message.toString())
-                }
-            }
+  init {
+    viewModelScope.launch {
+      triggerRefreshFlow.collectLatest {
+        _hierarchyScreenState.value = HierarchyScreenState.Loading
+        formNestRepository.surveyData().onSuccess { contentItemDomain ->
+          withContext(dispatchers.main()) {
+            val contentUi = contentMapper.map(contentItemDomain)
+            _hierarchyScreenState.value = HierarchyScreenState.Success(
+              hierarchyList = hierarchyList(contentUi)
+            )
+          }
+        }.onFailure { error ->
+          _hierarchyScreenState.value = HierarchyScreenState.Error(error.message.toString())
         }
-        triggerRefreshFlow.tryEmit(Unit)
+      }
     }
+    triggerRefreshFlow.tryEmit(Unit)
+  }
 
-    fun refresh() = triggerRefreshFlow.tryEmit(Unit)
+  fun refresh() = triggerRefreshFlow.tryEmit(Unit)
 
-    private fun hierarchyList(root: HierarchyContentUi): List<HierarchyRecursiveItemUi> = buildList {
-        fun fillHierarchyListRecursive(item: HierarchyContentUi, level: Int) {
-            add(HierarchyRecursiveItemUi(item, level))
-            when (item) {
-                is HierarchyContentUi.Page -> item.items.forEach {
-                    fillHierarchyListRecursive(it, level + 1)
-                }
-
-                is HierarchyContentUi.Section -> item.items.forEach {
-                    fillHierarchyListRecursive(it, level + 1)
-                }
-
-                else -> Unit
-            }
+  private fun hierarchyList(root: HierarchyContentUi): List<HierarchyRecursiveItemUi> = buildList {
+    fun fillHierarchyListRecursive(item: HierarchyContentUi, level: Int) {
+      add(HierarchyRecursiveItemUi(item, level))
+      when (item) {
+        is HierarchyContentUi.Page -> item.items.forEach {
+          fillHierarchyListRecursive(it, level + 1)
         }
 
-        fillHierarchyListRecursive(root, 0)
+        is HierarchyContentUi.Section -> item.items.forEach {
+          fillHierarchyListRecursive(it, level + 1)
+        }
+
+        else -> Unit
+      }
     }
+
+    fillHierarchyListRecursive(root, 0)
+  }
 }

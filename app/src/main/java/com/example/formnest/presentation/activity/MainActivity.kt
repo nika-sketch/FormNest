@@ -13,19 +13,19 @@ import com.example.formnest.ui.theme.FormNestTheme
 
 class MainActivity : ComponentActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            FormNestTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    NavRoot(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                    )
-                }
-            }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enableEdgeToEdge()
+    setContent {
+      FormNestTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+          NavRoot(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+          )
         }
+      }
     }
+  }
 }

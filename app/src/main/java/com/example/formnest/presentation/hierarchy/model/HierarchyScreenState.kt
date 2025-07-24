@@ -7,4 +7,6 @@ sealed class HierarchyScreenState {
     data class Error(val message: String) : HierarchyScreenState()
 
     data object Loading : HierarchyScreenState()
+
+    data object Initial : HierarchyScreenState()
 }

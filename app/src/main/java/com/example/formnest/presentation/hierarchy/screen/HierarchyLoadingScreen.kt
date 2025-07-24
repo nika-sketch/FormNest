@@ -1,4 +1,4 @@
-package com.example.formnest.presentation.hierarchy
+package com.example.formnest.presentation.hierarchy.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,28 +17,28 @@ import com.example.formnest.shared.shimmer
 
 @Composable
 fun LoadingContentPlaceholder(levels: List<Int>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        itemsIndexed(levels) { index, level ->
-            ShimmerHierarchyItem(level = level)
-        }
+  LazyColumn(modifier = Modifier.fillMaxSize()) {
+    itemsIndexed(levels) { index, level ->
+      ShimmerHierarchyItem(level = level)
     }
+  }
 }
 
 @Composable
 fun ShimmerHierarchyItem(level: Int) {
-    val baseFontSize = 24.sp
-    val step = 2.sp
-    val minFontSize = 12.sp
+  val baseFontSize = 24.sp
+  val step = 2.sp
+  val minFontSize = 12.sp
 
-    val fontSize = (baseFontSize.value - level * step.value).coerceAtLeast(minFontSize.value).sp
-    val paddingStart = (level * 12).dp
+  val fontSize = (baseFontSize.value - level * step.value).coerceAtLeast(minFontSize.value).sp
+  val paddingStart = (level * 12).dp
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
-            .height(fontSize.value.dp * 1.6f)
-            .clip(RoundedCornerShape(4.dp))
-            .shimmer()
-    )
+  Box(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
+      .height(fontSize.value.dp * 1.6f)
+      .clip(RoundedCornerShape(4.dp))
+      .shimmer()
+  )
 }

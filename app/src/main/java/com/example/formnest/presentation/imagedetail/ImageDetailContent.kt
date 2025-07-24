@@ -1,5 +1,10 @@
 package com.example.formnest.presentation.imagedetail
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,40 +33,59 @@ import coil3.request.crossfade
 
 @Composable
 fun ImageContent(
-    modifier: Modifier = Modifier,
-    title: String, imageUrl: String
+  modifier: Modifier = Modifier,
+  title: String,
+  imageUrl: String
 ) {
+  val transitionState = remember { MutableTransitionState(false).apply { targetState = true } }
+  AnimatedVisibility(
+    visibleState = transitionState,
+    enter = slideInVertically(
+      initialOffsetY = { fullHeight -> fullHeight },
+      animationSpec = spring(
+        dampingRatio = Spring.DampingRatioLowBouncy,
+        stiffness = Spring.StiffnessLow
+      )
+    )
+  ) {
     val scrollState = rememberScrollState()
+
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState),
+      modifier = modifier
+        .fillMaxSize()
+        .verticalScroll(scrollState),
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = title,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+      Text(
+        modifier = Modifier.fillMaxWidth(),
+        text = title,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center
+      )
+
+      Spacer(modifier = Modifier.height(12.dp))
+
+      Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+      ) {
+        val model = ImageRequest.Builder(LocalContext.current)
+          .data(imageUrl)
+          .crossfade(true)
+          .build()
+
+        AsyncImage(
+          model = model,
+          contentDescription = title,
+          modifier = Modifier
+            .size(400.dp)
+            .clip(RoundedCornerShape(8.dp)),
+          contentScale = ContentScale.Crop
         )
-        Spacer(modifier = Modifier.height(12.dp))
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            val model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
-                .crossfade(true).build()
-            AsyncImage(
-                model = model,
-                contentDescription = title,
-                modifier = Modifier
-                    .size(400.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
-        }
+      }
     }
+  }
 }
+
 
 
