@@ -18,15 +18,15 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 
-sealed interface ContentItemUi {
+sealed interface HierarchyContentUi {
 
     @Composable
     fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)? = null)
 
     data class Page(
         val title: String,
-        val items: List<ContentItemUi>,
-    ) : ContentItemUi {
+        val items: List<HierarchyContentUi>,
+    ) : HierarchyContentUi {
         @Composable
         override fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)?) {
             Text(
@@ -38,8 +38,8 @@ sealed interface ContentItemUi {
 
     data class Section(
         val title: String,
-        val items: List<ContentItemUi>,
-    ) : ContentItemUi {
+        val items: List<HierarchyContentUi>,
+    ) : HierarchyContentUi {
         @Composable
         override fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)?) {
             Text(
@@ -49,7 +49,7 @@ sealed interface ContentItemUi {
         }
     }
 
-    data class Text(val title: String) : ContentItemUi {
+    data class Text(val title: String) : HierarchyContentUi {
         @Composable
         override fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)?) {
             Text(text = title, fontSize = fontSize)
@@ -58,7 +58,7 @@ sealed interface ContentItemUi {
 
     data class Image(
         val title: String, val src: String
-    ) : ContentItemUi {
+    ) : HierarchyContentUi {
         @Composable
         override fun Content(fontSize: TextUnit, onClick: ((String, String) -> Unit)?) {
             Text(text = title, fontSize = fontSize)

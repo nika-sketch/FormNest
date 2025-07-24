@@ -11,9 +11,12 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.example.formnest.FormNestApp
-import com.example.formnest.presentation.hierarchy.ContentViewModel
+import com.example.formnest.presentation.hierarchy.HierarchyViewModel
+import com.example.formnest.presentation.hierarchy.HierarchyErrorScreen
 import com.example.formnest.presentation.hierarchy.mapper.ContentUiMapper
 import com.example.formnest.presentation.hierarchy.HierarchyScreen
+import com.example.formnest.presentation.hierarchy.LoadingContentPlaceholder
+import com.example.formnest.presentation.hierarchy.model.HierarchyScreenState
 import com.example.formnest.presentation.imagedetail.ImageContent
 import com.example.formnest.presentation.navigation.model.ImageDetail
 import com.example.formnest.presentation.navigation.model.MainScreen
@@ -34,9 +37,9 @@ fun NavRoot(modifier: Modifier = Modifier) {
         entryProvider = { key ->
             when (key) {
                 MainScreen -> NavEntry(key = key) {
-                    val contentViewModel = viewModel<ContentViewModel>(
+                    val contentViewModel = viewModel<HierarchyViewModel>(
                         factory = viewModelFactory {
-                            ContentViewModel(
+                            HierarchyViewModel(
                                 formNestRepository = FormNestApp.formNestRepository,
                                 contentMapper = ContentUiMapper(),
                                 dispatchers = DispatcherProvider.Default()
@@ -44,9 +47,23 @@ fun NavRoot(modifier: Modifier = Modifier) {
                         }
                     )
                     val state = contentViewModel.state.collectAsStateWithLifecycle()
-                    HierarchyScreen(contentList = state.value, onClick = { title, imageUrl ->
-                        backStack.add(ImageDetail(title = title, imageUrl = imageUrl))
-                    })
+                    when (val state = state.value) {
+                        is HierarchyScreenState.Error -> HierarchyErrorScreen(
+                            message = state.message,
+                            onRetry = contentViewModel::refresh
+                        )
+
+                        is HierarchyScreenState.Loading -> LoadingContentPlaceholder(
+                            levels = listOf(0, 1, 1, 2, 0, 1, 2, 3)
+                        )
+
+                        is HierarchyScreenState.Success -> HierarchyScreen(
+                            contentList = state.hierarchyList,
+                            onClick = { title, imageUrl ->
+                                backStack.add(ImageDetail(title = title, imageUrl = imageUrl))
+                            })
+                    }
+
                 }
 
                 is ImageDetail -> NavEntry(key = key) {

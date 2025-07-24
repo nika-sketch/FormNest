@@ -10,11 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.formnest.presentation.hierarchy.model.RendererItemUi
+import com.example.formnest.presentation.hierarchy.model.HierarchyRecursiveItemUi
 
 @Composable
 fun HierarchyScreen(
-    contentList: List<RendererItemUi>,
+    contentList: List<HierarchyRecursiveItemUi>,
     onClick: ((String, String) -> Unit)? = null
 ) {
     LazyColumn(
@@ -28,7 +28,7 @@ fun HierarchyScreen(
 }
 
 @Composable
-fun HierarchyItem(renderItemUi: RendererItemUi, onClick: ((String, String) -> Unit)? = null) {
+fun HierarchyItem(renderItemUi: HierarchyRecursiveItemUi, onClick: ((String, String) -> Unit)? = null) {
     val item = renderItemUi.item
     val level = renderItemUi.level
 

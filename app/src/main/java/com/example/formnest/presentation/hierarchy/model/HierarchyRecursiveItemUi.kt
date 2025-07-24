@@ -1,6 +1,6 @@
 package com.example.formnest.presentation.hierarchy.model
 
-data class RendererItemUi(
-    val item: ContentItemUi,
+data class HierarchyRecursiveItemUi(
+    val item: HierarchyContentUi,
     val level: Int
 )
