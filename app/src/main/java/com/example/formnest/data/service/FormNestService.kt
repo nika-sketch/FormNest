@@ -7,6 +7,6 @@ import retrofit2.http.GET
 
 interface FormNestService {
 
-    @GET(BuildConfig.FORM_NEST_ENDPOING)
-    suspend fun fetchSurveyData(): Response<FormNestApiModel>
+  @GET(BuildConfig.FORM_NEST_ENDPOING)
+  suspend fun fetchSurveyData(): Response<FormNestApiModel>
 }

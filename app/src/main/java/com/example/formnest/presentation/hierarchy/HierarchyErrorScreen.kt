@@ -23,39 +23,39 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun HierarchyErrorScreen(
-    message: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier,
+  message: String,
+  onRetry: () -> Unit,
+  modifier: Modifier = Modifier,
 ) {
-    val transitionState = remember { MutableTransitionState(false).apply { targetState = true } }
-    AnimatedVisibility(
-        visibleState = transitionState,
-        enter = slideInVertically(initialOffsetY = { it / 2 }) + fadeIn(),
-        exit = fadeOut(),
-        modifier = modifier.fillMaxSize()
+  val transitionState = remember { MutableTransitionState(false).apply { targetState = true } }
+  AnimatedVisibility(
+    visibleState = transitionState,
+    enter = slideInVertically(initialOffsetY = { it / 2 }) + fadeIn(),
+    exit = fadeOut(),
+    modifier = modifier.fillMaxSize()
+  ) {
+    Box(
+      contentAlignment = Alignment.Center,
+      modifier = Modifier.fillMaxSize()
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(24.dp)
-            ) {
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center
-                )
+      Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(24.dp)
+      ) {
+        Text(
+          text = message,
+          style = MaterialTheme.typography.bodyLarge,
+          color = MaterialTheme.colorScheme.error,
+          textAlign = TextAlign.Center
+        )
 
-                Button(onClick = onRetry) {
-                    Text("Retry")
-                }
-            }
+        Button(onClick = onRetry) {
+          Text("Retry")
         }
+      }
     }
+  }
 }

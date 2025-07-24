@@ -16,33 +16,33 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun Modifier.shimmer(
-    durationMillis: Int = 1000,
+  durationMillis: Int = 1000,
 ): Modifier {
-    val transition = rememberInfiniteTransition(label = "")
+  val transition = rememberInfiniteTransition(label = "")
 
-    val translateAnimation by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 500f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = durationMillis,
-                easing = LinearEasing,
-            ),
-            repeatMode = RepeatMode.Restart,
+  val translateAnimation by transition.animateFloat(
+    initialValue = 0f,
+    targetValue = 500f,
+    animationSpec = infiniteRepeatable(
+      animation = tween(
+        durationMillis = durationMillis,
+        easing = LinearEasing,
+      ),
+      repeatMode = RepeatMode.Restart,
+    ),
+  )
+
+  return drawBehind {
+    drawRect(
+      brush = Brush.linearGradient(
+        colors = listOf(
+          Color.LightGray.copy(alpha = 0.2f),
+          Color.LightGray.copy(alpha = 1.0f),
+          Color.LightGray.copy(alpha = 0.2f),
         ),
+        start = Offset(x = translateAnimation, y = translateAnimation),
+        end = Offset(x = translateAnimation + 100f, y = translateAnimation + 100f),
+      )
     )
-
-    return drawBehind {
-        drawRect(
-            brush = Brush.linearGradient(
-                colors = listOf(
-                    Color.LightGray.copy(alpha = 0.2f),
-                    Color.LightGray.copy(alpha = 1.0f),
-                    Color.LightGray.copy(alpha = 0.2f),
-                ),
-                start = Offset(x = translateAnimation, y = translateAnimation),
-                end = Offset(x = translateAnimation + 100f, y = translateAnimation + 100f),
-            )
-        )
-    }
+  }
 }

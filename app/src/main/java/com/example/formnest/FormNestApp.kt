@@ -8,15 +8,15 @@ import com.example.formnest.shared.DispatcherProvider
 
 class FormNestApp : Application() {
 
-    companion object {
-        lateinit var formNestRepository: FormNestRepository
-    }
+  companion object {
+    lateinit var formNestRepository: FormNestRepository
+  }
 
-    override fun onCreate() {
-        super.onCreate()
-        formNestRepository = FormNestRepositoryImpl(
-            service = NetworkModule.NetworkModuleImpl().provideFormNestService(),
-            dispatcherProvider = DispatcherProvider.Default(),
-        )
-    }
+  override fun onCreate() {
+    super.onCreate()
+    formNestRepository = FormNestRepositoryImpl(
+      service = NetworkModule.NetworkModuleImpl().provideFormNestService(),
+      dispatcherProvider = DispatcherProvider.Default(),
+    )
+  }
 }

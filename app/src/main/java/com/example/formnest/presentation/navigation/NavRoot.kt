@@ -62,6 +62,8 @@ fun NavRoot(modifier: Modifier = Modifier) {
                         onClick = { title, imageUrl ->
                             backStack.add(ImageDetail(title = title, imageUrl = imageUrl))
                         })
+
+                    is HierarchyScreenState.Initial -> Unit
                 }
             }
             entry<ImageDetail> { imageDetail ->

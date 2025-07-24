@@ -12,30 +12,30 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 interface NetworkModule {
 
-    fun provideFormNestService() : FormNestService
+  fun provideFormNestService(): FormNestService
 
-    class NetworkModuleImpl : NetworkModule {
+  class NetworkModuleImpl : NetworkModule {
 
-        override fun provideFormNestService(): FormNestService =
-            provideRetrofitClient(okHttpClient).create(FormNestService::class.java)
+    override fun provideFormNestService(): FormNestService =
+      provideRetrofitClient(okHttpClient).create(FormNestService::class.java)
 
-        private val okHttpClient = OkHttpClient.Builder().addInterceptor(
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }).callTimeout(15, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(true).build()
+    private val okHttpClient = OkHttpClient.Builder().addInterceptor(
+      HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+      }).callTimeout(15, TimeUnit.SECONDS)
+      .writeTimeout(15, TimeUnit.SECONDS)
+      .readTimeout(15, TimeUnit.SECONDS)
+      .connectTimeout(15, TimeUnit.SECONDS)
+      .retryOnConnectionFailure(true).build()
 
-        private fun provideRetrofitClient(okHttpClient: OkHttpClient): Retrofit {
-            val moshiConverterFactory = MoshiConverterFactory.create(
-                Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
-            )
-            return Retrofit.Builder().baseUrl(BuildConfig.FORM_NEST_BASE_URL)
-                .addConverterFactory(moshiConverterFactory)
-                .client(okHttpClient)
-                .build()
-        }
+    private fun provideRetrofitClient(okHttpClient: OkHttpClient): Retrofit {
+      val moshiConverterFactory = MoshiConverterFactory.create(
+        Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+      )
+      return Retrofit.Builder().baseUrl(BuildConfig.FORM_NEST_BASE_URL)
+        .addConverterFactory(moshiConverterFactory)
+        .client(okHttpClient)
+        .build()
     }
+  }
 }
