@@ -18,8 +18,7 @@ import androidx.compose.ui.graphics.Color
 fun Modifier.shimmer(
   durationMillis: Int = 1000,
 ): Modifier {
-  val transition = rememberInfiniteTransition(label = "")
-
+  val transition = rememberInfiniteTransition()
   val translateAnimation by transition.animateFloat(
     initialValue = 0f,
     targetValue = 500f,

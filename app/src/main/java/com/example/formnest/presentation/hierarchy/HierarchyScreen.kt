@@ -39,15 +39,14 @@ fun HierarchyScreen(
   onClick: ((String, String) -> Unit)? = null
 ) {
   LazyColumn(
-    modifier = Modifier
-      .fillMaxSize()
+    modifier = Modifier.fillMaxSize()
   ) {
     itemsIndexed(contentList) { index, item ->
       HierarchyItem(
         modifier = Modifier.animateItem(),
         renderItemUi = item,
         onClick = onClick,
-        index = index // pass index here
+        index = index
       )
     }
   }
