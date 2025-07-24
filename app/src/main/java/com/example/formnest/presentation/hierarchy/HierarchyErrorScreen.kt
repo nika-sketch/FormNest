@@ -42,8 +42,8 @@ fun HierarchyErrorScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
-            .wrapContentSize()
-            .padding(24.dp)
+          .wrapContentSize()
+          .padding(24.dp)
       ) {
         Text(
           text = message,

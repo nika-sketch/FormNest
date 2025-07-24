@@ -35,10 +35,10 @@ fun ShimmerHierarchyItem(level: Int) {
 
   Box(
     modifier = Modifier
-        .fillMaxWidth()
-        .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
-        .height(fontSize.value.dp * 1.6f)
-        .clip(RoundedCornerShape(4.dp))
-        .shimmer()
+      .fillMaxWidth()
+      .padding(start = paddingStart, top = 8.dp, bottom = 8.dp)
+      .height(fontSize.value.dp * 1.6f)
+      .clip(RoundedCornerShape(4.dp))
+      .shimmer()
   )
 }
