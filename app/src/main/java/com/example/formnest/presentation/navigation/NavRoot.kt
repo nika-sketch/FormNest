@@ -5,7 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.entry
+import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
@@ -34,46 +35,40 @@ fun NavRoot(modifier: Modifier = Modifier) {
             rememberSceneSetupNavEntryDecorator()
         ),
         modifier = modifier,
-        entryProvider = { key ->
-            when (key) {
-                MainScreen -> NavEntry(key = key) {
-                    val contentViewModel = viewModel<HierarchyViewModel>(
-                        factory = viewModelFactory {
-                            HierarchyViewModel(
-                                formNestRepository = FormNestApp.formNestRepository,
-                                contentMapper = ContentUiMapper(),
-                                dispatchers = DispatcherProvider.Default()
-                            )
-                        }
-                    )
-                    val state = contentViewModel.state.collectAsStateWithLifecycle()
-                    when (val state = state.value) {
-                        is HierarchyScreenState.Error -> HierarchyErrorScreen(
-                            message = state.message,
-                            onRetry = contentViewModel::refresh
+        entryProvider = entryProvider {
+            entry<MainScreen> {
+                val contentViewModel = viewModel<HierarchyViewModel>(
+                    factory = viewModelFactory {
+                        HierarchyViewModel(
+                            formNestRepository = FormNestApp.formNestRepository,
+                            contentMapper = ContentUiMapper(),
+                            dispatchers = DispatcherProvider.Default()
                         )
-
-                        is HierarchyScreenState.Loading -> LoadingContentPlaceholder(
-                            levels = listOf(0, 1, 1, 2, 0, 1, 2, 3)
-                        )
-
-                        is HierarchyScreenState.Success -> HierarchyScreen(
-                            contentList = state.hierarchyList,
-                            onClick = { title, imageUrl ->
-                                backStack.add(ImageDetail(title = title, imageUrl = imageUrl))
-                            })
                     }
-
-                }
-
-                is ImageDetail -> NavEntry(key = key) {
-                    ImageContent(
-                        title = key.title,
-                        imageUrl = key.imageUrl,
+                )
+                val state = contentViewModel.state.collectAsStateWithLifecycle()
+                when (val state = state.value) {
+                    is HierarchyScreenState.Error -> HierarchyErrorScreen(
+                        message = state.message,
+                        onRetry = contentViewModel::refresh
                     )
-                }
 
-                else -> error("Unknown key: $key")
+                    is HierarchyScreenState.Loading -> LoadingContentPlaceholder(
+                        levels = listOf(0, 1, 1, 2, 0, 1, 2, 3)
+                    )
+
+                    is HierarchyScreenState.Success -> HierarchyScreen(
+                        contentList = state.hierarchyList,
+                        onClick = { title, imageUrl ->
+                            backStack.add(ImageDetail(title = title, imageUrl = imageUrl))
+                        })
+                }
+            }
+            entry<ImageDetail> { imageDetail ->
+                ImageContent(
+                    title = imageDetail.title,
+                    imageUrl = imageDetail.imageUrl,
+                )
             }
         }
     )
