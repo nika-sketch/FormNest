@@ -30,9 +30,9 @@ class FormNestRepositoryImpl(
     } else {
       runCatching {
         val response = formNestService.fetchSurveyData()
-        if (!response.isSuccessful) error("Network call failed with code: ${response.code()}")
-        val body = response.body() ?: error("Body is null")
-        val formNestDomain = body.toFormNestDomain() ?: error("Invalid data structure")
+        if (!response.isSuccessful) error("Network call failed, try again later")
+        val body = response.body() ?: error("Something went wrong")
+        val formNestDomain = body.toFormNestDomain() ?: error("Something went wrong")
         formNestDao.clearFormNestList()
         formNestDao.insertFormNestList(listOf(body.toEntity()))
         formNestDomain

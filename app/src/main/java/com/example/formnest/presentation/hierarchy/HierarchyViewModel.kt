@@ -78,9 +78,8 @@ class HierarchyViewModel(
 
   private fun observeConnection() = viewModelScope.launch {
     connectivityObserver.isConnectedFlow.collect { isConnected ->
-      val currentState = _hierarchyScreenState.value
-      if (currentState !is HierarchyScreenState.Success && isConnected)
-        refresh()
+      val currentState = hierarchyScreenState.value
+      if (currentState !is HierarchyScreenState.Success && isConnected) refresh()
     }
   }
 }
