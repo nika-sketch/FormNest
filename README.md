@@ -35,7 +35,6 @@ This project is part of a coding challenge focused on building a **structured**,
 | [Jetpack Navigation 3 (Alpha)](https://developer.android.com/jetpack/androidx/releases/navigation3) | Navigation between screens with predictive back support for sdk 36 |
 | [Coil](https://coil-kt.github.io/coil/) | Image loading in Compose |
 | [Retrofit](https://square.github.io/retrofit/) | Networking and API service simulation |
-| [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) | Dependency Injection |
 
 ## 🗂️ Architecture
 
