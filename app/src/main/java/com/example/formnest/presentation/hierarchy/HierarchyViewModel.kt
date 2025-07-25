@@ -70,7 +70,6 @@ class HierarchyViewModel(
           )
         }
       }.onFailure { error ->
-        // TODO handle error with user friendly message depending on exception type
         _hierarchyScreenState.value = HierarchyScreenState.Error(error.message.toString())
       }
     }
