@@ -74,16 +74,8 @@ The JSON is fetched from:
 
 https://mocki.io/v1/f118b9f0-6f84-435e-85d5-faf4453eb72a
 
-Sample structure:
-   {
-     "items": [
-       {
-         "type": "page",
-         "title": "Page 1",
-         "items": [...]
-       }
-     ]
-   }
+### Sample structure:
+   <pre> { "items": [ { "type": "page", "title": "Page 1", "items": [ { "type": "section", "title": "Section A", "items": [ { "type": "question", "question_type": "text", "title": "What is your name?" }, { "type": "question", "question_type": "image", "title": "Upload your profile picture", "image_url": "https://example.com/image.jpg" } ] } ] } ] } </pre>
 
 ## 🌐 Offline Support
 All JSON content is cached locally using Room. On app restart or when offline, the cached content is used to rehydrate the UI. This ensures seamless user experience even in low connectivity scenarios.
