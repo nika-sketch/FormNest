@@ -55,7 +55,7 @@ This project follows **MVVM (Model-View-ViewModel)** with a clean separation of 
 
 ### Prerequisites
 
-- Android Studio Giraffe or newer
+- Android Studio Meerkat or newer
 - Android SDK 34+
 - Kotlin 1.9+
 - Gradle 8.0+
