@@ -69,13 +69,8 @@ fun HierarchyItem(
 ) {
   val alreadyAnimated = remember { index in animatedIndices }
   var visible by remember { mutableStateOf(alreadyAnimated) }
-
-  val offsetY by animateDpAsState(
-    targetValue = if (visible) 0.dp else 40.dp,
-  )
-  val alpha by animateFloatAsState(
-    targetValue = if (visible) 1f else 0f,
-  )
+  val offsetY by animateDpAsState(targetValue = if (visible) 0.dp else 40.dp)
+  val alpha by animateFloatAsState(targetValue = if (visible) 1f else 0f)
 
   LaunchedEffect(Unit) {
     if (!alreadyAnimated) {
