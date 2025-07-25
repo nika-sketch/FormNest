@@ -64,5 +64,5 @@ This project follows **MVVM (Model-View-ViewModel)** with a clean separation of 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/json-hierarchy-viewer.git
+   git clone [https://github.com/your-username/json-hierarchy-viewer.git](https://github.com/nika-sketch/FormNest.git)
    cd json-hierarchy-viewer
