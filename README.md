@@ -43,7 +43,7 @@ This project follows **MVVM (Model-View-ViewModel)** with a clean separation of 
 - `data` – Networking, caching, and DTOs
 - `domain` – Models and business logic
 - `ui` – Composables and navigation
-- `di` – Dependency injection setup using Hilt
+- `di` – Dependency injection manually
 
 ## 🧪 Testing
 
