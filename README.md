@@ -103,4 +103,3 @@ Graceful error handling shows cached content or fallback messages.
 ## 🌐 Connectivity Fallback
 If the app fails to reach the API due to a network issue:
 It automatically loads the last cached data.
-Displays a snackbar or message to the user about the offline state.
