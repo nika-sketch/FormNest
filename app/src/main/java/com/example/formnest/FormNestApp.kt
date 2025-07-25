@@ -6,7 +6,7 @@ import com.example.formnest.data.cache.AppDatabase
 import com.example.formnest.data.repository.FormNestRepositoryImpl
 import com.example.formnest.di.NetworkModule
 import com.example.formnest.domain.repository.FormNestRepository
-import com.example.formnest.shared.CheckNetwork
+import com.example.formnest.shared.ConnectivityObserver
 import com.example.formnest.shared.DispatcherProvider
 
 class FormNestApp : Application() {
@@ -26,7 +26,7 @@ class FormNestApp : Application() {
         name = FORM_NEST_DB
       ).build().formNestDao(),
       dispatcherProvider = DispatcherProvider.Default(),
-      checkNetwork = CheckNetwork.Base(applicationContext = this)
+      connectivityObserver = ConnectivityObserver.AndroidConnectivityObserver(context = this)
     )
   }
 }

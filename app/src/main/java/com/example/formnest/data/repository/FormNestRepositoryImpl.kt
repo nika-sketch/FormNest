@@ -6,7 +6,7 @@ import com.example.formnest.data.mapper.toEntity
 import com.example.formnest.data.service.FormNestService
 import com.example.formnest.domain.model.FormNestDomain
 import com.example.formnest.domain.repository.FormNestRepository
-import com.example.formnest.shared.CheckNetwork
+import com.example.formnest.shared.ConnectivityObserver
 import com.example.formnest.shared.DispatcherProvider
 import kotlinx.coroutines.withContext
 
@@ -14,12 +14,12 @@ class FormNestRepositoryImpl(
   private val formNestService: FormNestService,
   private val formNestDao: FormNestDao,
   private val dispatcherProvider: DispatcherProvider,
-  private val checkNetwork: CheckNetwork
+  private val connectivityObserver: ConnectivityObserver
 ) : FormNestRepository {
 
   override suspend fun surveyData(): Result<FormNestDomain> = withContext(dispatcherProvider.io()) {
     val cachedResult = formNestDao.formNestList()
-    if (!checkNetwork.isConnected() && cachedResult.isEmpty()) {
+    if (!connectivityObserver.isConnected() && cachedResult.isEmpty()) {
       return@withContext Result.failure(IllegalStateException("No network connection"))
     }
     if (cachedResult.isNotEmpty()) {
