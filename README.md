@@ -64,5 +64,50 @@ This project follows **MVVM (Model-View-ViewModel)** with a clean separation of 
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/your-username/json-hierarchy-viewer.git](https://github.com/nika-sketch/FormNest.git)
+   git clone https://github.com/your-username/json-hierarchy-viewer.git
    cd json-hierarchy-viewer
+2. Open the project in Android Studio
+3. Run the app on an emulator or device
+
+### Api
+The JSON is fetched from:
+
+https://mocki.io/v1/f118b9f0-6f84-435e-85d5-faf4453eb72a
+
+Sample structure:
+   {
+     "items": [
+       {
+         "type": "page",
+         "title": "Page 1",
+         "items": [...]
+       }
+     ]
+   }
+
+📁 Offline Support
+All JSON content is cached locally using Room. On app restart or when offline, the cached content is used to rehydrate the UI. This ensures seamless user experience even in low connectivity scenarios.
+
+💡 Design Decisions
+Compose was chosen for declarative UI and scalability.
+
+Room provides a robust local persistence solution with minimal boilerplate.
+
+Navigation 3 is used experimentally to embrace new APIs.
+
+Font sizes dynamically scale based on hierarchy depth using a recursive UI builder.
+
+Graceful error handling shows cached content or fallback messages.
+
+🔌 Connectivity Fallback
+If the app fails to reach the API due to a network issue:
+It automatically loads the last cached data.
+Displays a snackbar or message to the user about the offline state.
+
+📚 Useful Links
+Jetpack Compose Docs
+Room Persistence Library
+Kotlin Coroutines
+Navigation Component
+Coil Image Loader
+Retrofit
