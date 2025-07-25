@@ -23,7 +23,7 @@ This project is part of a coding challenge focused on building a **structured**,
 - 🖼️ Image questions are fetched, resized, and clickable to view full-screen
 - 📡 Simulated network fetching with offline persistence
 - 💾 Offline support using [Room](https://developer.android.com/jetpack/androidx/releases/room)
-- ⚙️ Modular architecture using [Jetpack Navigation 3](https://developer.android.com/jetpack/androidx/releases/navigation) (alpha)
+- ⚙️ Modular architecture using [Jetpack Navigation 3](https://developer.android.com/jetpack/androidx/releases/navigation3) (alpha)
 
 ## 📦 Tech Stack
 
@@ -44,11 +44,6 @@ This project follows **MVVM (Model-View-ViewModel)** with a clean separation of 
 - `domain` – Models and business logic
 - `ui` – Composables and navigation
 - `di` – Dependency injection manually
-
-## 🧪 Testing
-
-- Unit tests available for ViewModels and data layer
-- Offline caching and JSON parsing are covered by integration tests
 
 ## 📲 How to Run
 
