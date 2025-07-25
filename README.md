@@ -45,11 +45,6 @@ This project follows **MVVM (Model-View-ViewModel)** with a clean separation of 
 - `ui` – Composables and navigation
 - `di` – Dependency injection manually
 
-## 🧪 Testing
-
-- Unit tests available for ViewModels and data layer
-- Offline caching and JSON parsing are covered by integration tests
-
 ## 📲 How to Run
 
 ### Prerequisites
