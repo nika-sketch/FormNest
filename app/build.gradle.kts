@@ -27,7 +27,7 @@ android {
       buildConfigField(
         "String",
         "FORM_NEST_ENDPOING",
-        "\"f118b9f0-6f84-435e-85d5-faf4453eb72a\""
+        "\"28b5d6e6-cd9e-49d7-abf9-8baceb1d83c5\""
       )
     }
     release {
@@ -35,7 +35,7 @@ android {
       buildConfigField(
         "String",
         "FORM_NEST_ENDPOING",
-        "\"f118b9f0-6f84-435e-85d5-faf4453eb72a\""
+        "\"28b5d6e6-cd9e-49d7-abf9-8baceb1d83c5\""
       )
       isMinifyEnabled = false
       proguardFiles(
